@@ -27,7 +27,7 @@ jobs:
       
       - name: Construir la imagen de Docker
         run: |
-          docker build -t ghcr.io/19ramirez/ejercicio:3.0.0 .
+          docker build -t ghcr.io/jeon-dom/docker-flask:1.0.0 .
 
       - name: Login en GitHub Container Registry
         run: |
@@ -35,7 +35,7 @@ jobs:
 
       - name: Publicar la imagen
         run: |
-          docker push ghcr.io/19ramirez/ejercicio:3.0.0
+          docker push ghcr.io/jeon-dom/docker-flask:1.0.0
       
       - name: Mostrar variables (solo locales,no secretos)
         run: |
@@ -57,4 +57,3 @@ jobs:
             hostname
             whoami
             uptime
-            
