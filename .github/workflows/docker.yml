@@ -54,6 +54,4 @@ jobs:
           port: ${{ secrets.VPS_SSH_PORT }}
           script: |
             echo "Probando conexion SSH en el VPS"
-            hostname
-            whoami
-            uptime
+            touch quintoa.txt 
