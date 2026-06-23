@@ -1,6 +1,7 @@
 version: '3.8'
 
 services:
+  # Tu aplicación Flask
   docker-flask:
     image: ghcr.io/jeon-dom/docker-flask:1.0.0
     build:
@@ -28,6 +29,20 @@ services:
         - "traefik.http.routers.docker-flask-secure.service=docker-flask"
         - "traefik.http.services.docker-flask.loadbalancer.server.port=5000"
         - "traefik.docker.network=traefik-public"
+
+  # La Base de Datos que tu app.py busca desesperadamente
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: empresa
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+    networks:
+      - traefik-public
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
 
 networks:
   traefik-public:
