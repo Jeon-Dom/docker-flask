@@ -1,1 +1,34 @@
-version:'3.9'
+version: '3.8'
+
+services:
+  docker-flask:
+    image: ghcr.io/jeon-dom/docker-flask:1.0.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - traefik-public
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.docker-flask.entrypoints=http"
+        - "traefik.http.routers.docker-flask.rule=Host(`domenica.byronrm.com`)"
+        - "traefik.http.middlewares.docker-flask-https-redirect.redirectscheme.scheme=https"
+        - "traefik.http.routers.docker-flask.middlewares=docker-flask-https-redirect"
+        - "traefik.http.routers.docker-flask-secure.entrypoints=https"
+        - "traefik.http.routers.docker-flask-secure.rule=Host(`domenica.byronrm.com`)"
+        - "traefik.http.routers.docker-flask-secure.tls=true"
+        - "traefik.http.routers.docker-flask-secure.tls.certresolver=http"
+        - "traefik.http.routers.docker-flask-secure.service=docker-flask"
+        - "traefik.http.services.docker-flask.loadbalancer.server.port=5000"
+        - "traefik.docker.network=traefik-public"
+
+networks:
+  traefik-public:
+    external: true
